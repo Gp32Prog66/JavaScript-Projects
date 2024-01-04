@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CMPS 260: Module 3 Homework</title>
+  <style>
+    * {
+      font-family: monospace;
+    }
+  </style>
+  <script>
+    //--------------------------//
+    // The stack data structure //
+    //--------------------------//
+    console.log("The stack data structure");
+
+    // 1. Implement the stack data structure using the prototype (as opposed to the
+    //    version we wrote in class).
+
+    function Stack() {
+      // properties are initialized here
+      this.items = [];
+    }
+
+    // methods go here using Stack.prototype.
+
+    Stack.prototype.pop = function () {
+      return this.items.pop();
+    };
+
+    Stack.prototype.push = function (element) {
+      return this.items.push(element);
+    };
+
+    Stack.prototype.peek = function () {
+      return this.items[this.items.length - 1];
+    };
+
+    Stack.prototype.isEmpty = function () {
+      return this.items.length === 0;
+
+    };
+
+    Stack.prototype.clear = function (element) {
+      return this.items = [];
+    };
+
+    Stack.prototype.size = function () {
+      return this.items.length;
+    };
+
+    Stack.prototype.print = function () {
+      console.log(this.items.toString());
+    }
+
+    // 2. Write a simple test program that shows your stack works.
+
+    var testStack = new Stack();
+
+    //Pushing to Stack
+    testStack.push(100);
+    testStack.push(200);
+    testStack.push(300);
+    testStack.push(400);
+    testStack.push(500);
+
+    //Printing what is on the Stack
+    console.log("Here is the stack");
+    testStack.print();
+
+    //Print Size
+    console.log("The Size of the Stack is " + testStack.size());
+
+    //Print The Peek of the Stack
+    console.log("Peek of the Stack: " + testStack.peek());
+
+    //Popping the Stack
+    testStack.pop() === 500;
+    testStack.pop() === 400;
+    testStack.pop() === 300;
+
+
+    testStack.print();
+
+    //Clear Stack
+    console.log("Clearing Stack");
+    testStack.clear();
+    testStack.print();
+
+
+    //Check if Stack is Empty
+    console.log("Stack should be empty: " + testStack.isEmpty());
+    testStack.print();
+
+
+
+    // 3. Add a method to Stack that returns the largest value on the stack. Return
+    //    null if there are no elements on the stack. Show that your method works.
+
+    Stack.prototype.largest = function () {
+
+      //Declaring Largest Variable
+      var largestVar = this.items[0];
+      var tempLargestVar;
+
+      for (var i = 1; i < this.items.length; i++) {
+
+        if (testStack.isEmpty() === false) {
+          return testStack[i] === largestVar;
+          if (this.largestVar > this.tempLargestVar) {
+            return this.largestVar != this.tempLargestVar;
+          }
+          else if (this.largestVar < this.tempLargestVar) {
+            return this.largestVar === this.tempLargestVar;
+          }
+          else
+          {
+            return false; 
+          }
+          //Printing Results
+          console.log("Largest Stack is " + largestVar);
+          return testStack[i + 1] === tempLargestVar;
+        }
+
+
+        {
+          return console.log(this.items.length);
+        }
+      }
+
+      return null;
+
+      return this.items === this.largestVar;
+    }
+
+    //Stacking New Numbers to Demonstrate Largest Number Prototype
+    testStack.push(1);
+    testStack.push(2);
+    testStack.push(3);
+    testStack.push(1);
+    testStack.print();
+
+    testStack.largest();
+
+    console.log("Largest Number");
+    console.log(testStack.largest(testStack));
+
+    //----------------------------------//
+    // ECMAScript 6 and the Stack class //s
+    //----------------------------------//
+    console.log("ECMAScript 6 and the Stack class");
+
+    // Skip.
+
+
+
+    //-------------------------------//
+    // Solving problems using stacks //
+    //-------------------------------//
+    console.log("Solving problems using stacks");
+
+    // See Project.
+
+
+
+    //---------//
+    // Project //
+    //---------//
+    console.log("Project");
+
+    // 1. It is possible to use a stack to check if the number of parentheses in a
+    //    string is balanced, meaning there are as many opening parentheses as
+    //    closing ones. In addition, we can also make sure that each opening
+    //    parenthesis precedes a closing parenthesis. Implement this algorithm.
+    //    HINT: When encountering '(' push to the stack and when encountering ')'
+    //    pop from the stack.
+
+    var parenthesesStack = new Stack();
+    var parenthesesStackTwo = new Stack();
+    var parenthesesStackThree = new Stack();
+
+    function isBalanced(str, str2) {
+      // check the parentheses in str
+      console.log("Test");
+
+      var parenthesesString = ["()()()()()"]; //Should be Balanced
+      var parenthesesStringTwo = ["(())((())((())((()))"]; //Shouldn't be Balanced
+      var emptyParenthesesString = [""]; //Empty String
+
+      //Iterate the first Test Variable
+      for (var i = 0; i < parenthesesString.length; i++) {
+        console.log(parenthesesString[i]);
+
+        if (parenthesesString[i] === '(') {
+          parenthesesStack.push(1);
+          parenthesesStack.print();
+          console.log("ParenthesesString Length: " + parenthesesStack.size());
+        }
+        else if (parenthesesString[i] === (')')) {
+          parenthesesStack.pop() === 1;
+          parenthesesStack.print();
+        }
+
+        parenthesesStack.print();
+
+        if (parenthesesStack.isEmpty() === true) {
+          return console.log("The Stack is balanced");
+        }
+        else if (parenthesesStack.isEmpty() !== true) {
+          return console.log("The Stack isn't balanced");
+        }
+        else {
+          console.log("Error");
+        }
+
+      }
+
+      //Testing the Second Parenthesis Strings
+
+      for (var i = 0; i <= parenthesesStringTwo.length; i++) {
+        console.log(parenthesesStringTwo[i]);
+      }
+
+      if (parenthesesStringTwo[i] === ('(')) {
+        parenthesesStackTwo.push(1);
+      }
+      else if (parenthesesStringTwo[i] === (')')) {
+        parenthesesStackTwo.pop() === 1;
+      }
+
+      parenthesesStackTwo.print();
+
+      if (parenthesesStackTwo.isEmpty() === true) {
+        return console.log("Stack # 2 is balanced");
+      }
+      else {
+        return console.log("Stack # 2 isn't balanced");
+      }
+
+      //Testing the Third Parentheses String
+
+      for (var i = 0; i <= emptyParenthesesString.length; i++) {
+        if (str === parenthesesStackThree.isEmpty()) {
+          console.log("The String is empty");
+        }
+
+        console.log(emptyParenthesesStringTwo[i]);
+      }
+
+      return str;
+
+      return parenthesesStack, parenthesesStackTwo, parenthesesStackThree;
+    }
+
+    // 2. Write a simple test program that shows your implementation works.
+
+
+    isBalanced('()()', '()');
+    isBalanced('()', '()');
+    isBalanced("()", "()");
+
+
+  </script>
+</head>
+
+<body>
+  See console!
+</body>
+
+</html>

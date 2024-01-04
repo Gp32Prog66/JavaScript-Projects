@@ -1,0 +1,466 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CMPS 260: Module 9 Assignment</title>
+  <style>
+    * {
+      font-family: monospace;
+    }
+  </style>
+  <script>
+    //-------------------------//
+    // The tree data structure //
+    //-------------------------//
+
+    //------------------------------------//
+    // The binary and binary search trees //
+    //------------------------------------//
+    console.log("The binary and binary search trees");
+
+    function Node(key) {
+      this.key = key;
+      this.left = null;
+      this.right = null
+    }
+
+    function BinarySearchTree() {
+      // the root node
+      this.root = null;
+    }
+
+
+
+    // helper functions
+    BinarySearchTree.prototype._insertNode = function (node, newNode) {
+      if (newNode.key < node.key) {
+        // go to left
+        if (node.left === null) {
+          // no left node yet so assign
+          node.left = newNode;
+        }
+        else {
+          // move down tree and repeat
+          this._insertNode(node.left, newNode);
+        }
+      }
+      else {
+        // go to right
+        if (node.right === null) {
+          // no right node yet so assign
+          node.right = newNode;
+        }
+        else {
+          // move down tree and repeat
+          this._insertNode(node.right, newNode);
+        }
+      }
+    }
+
+    BinarySearchTree.prototype.insert = function (key) {
+      // insert new key in the tree
+      var newNode = new Node(key);
+      if (this.root === null) {
+        // no nodes yet
+        this.root = newNode;
+      }
+      else {
+        // find insert location through insertNode
+        this._insertNode(this.root, newNode);
+      }
+    };
+
+
+    BinarySearchTree.prototype.search = function (key) {
+      // search for key and return true if found, false otherwise
+      var searchNode = function (node, key) {
+        if (node === null) {
+          return false;
+        }
+        if (key < node.key) {
+          return searchNode(node.left, key);
+        }
+        else if (key > node.key) {
+          return searchNode(node.right, key);
+        }
+        else {
+          return true;
+        }
+      }
+      return searchNode(this.root, key);
+    };
+
+
+
+    BinarySearchTree.prototype.inOrderTraverse = function (callback) {
+      function inOrderTraverseNode(node, callback) {
+        if (node !== null) {
+          inOrderTraverseNode(node.left, callback);
+          callback(node.key);
+          inOrderTraverseNode(node.right, callback);
+        }
+      }
+      // visit all nodes of the tree using in-order traversal
+      // call callback with each key encountered
+      inOrderTraverseNode(this.root, callback);
+    };
+
+
+
+    BinarySearchTree.prototype.preOrderTraverse = function (callback) {
+      // visit all nodes of the tree using pre-order traversal
+      // call callback with each key encountered
+      function preOrderTraverseNode(node, callback) {
+        if (node !== null) {
+          callback(node.key);
+          preOrderTraverseNode(node.left, callback);
+          preOrderTraverseNode(node.right, callback);
+        }
+      }
+      preOrderTraverseNode(this.root, callback);
+    };
+
+
+
+    BinarySearchTree.prototype.postOrderTraverse = function (callback) {
+      // visit all nodes of the tree using post-order traversal
+      // call callback with each key encountered
+      function postOrderTraverseNode(node, callback) {
+        if (node !== null) {
+          postOrderTraverseNode(node.left, callback);
+          postOrderTraverseNode(node.right, callback);
+          callback(node.key);
+        }
+      }
+      postOrderTraverseNode(this.root, callback);
+    };
+
+
+
+    BinarySearchTree.prototype.min = function () {
+      // return the minimum key in the tree
+      var minNode = function (node) {
+        if (node) {
+          while (node && node.left !== null) {
+            node = node.left;
+          }
+          return node.key;
+        }
+        return null;
+      }
+      return minNode(this.root);
+    };
+
+
+
+    BinarySearchTree.prototype.max = function () {
+      // return the maximum key in the tree
+      var maxNode = function (node) {
+        if (node) {
+          while (node && node.right !== null) {
+            node = node.right;
+          }
+          return node.key;
+        }
+        return null;
+      }
+      return maxNode(this.root);
+    };
+
+
+
+    BinarySearchTree.prototype.remove = function (key) {
+      // removes the key from the tree
+      root = removeNode(root, key);
+    };
+
+    BinarySearchTree.prototype._removeNode = function (node, key) {
+      if (node === null) {
+        return null;
+      }
+      if (key < node.key) {
+        node.left = _removeNode(node.left, key);
+        return node;
+      }
+      else if (key > node.key) {
+        node.right = _removeNode(node.right, key);
+        return node;
+      }
+      else {
+        //Key is equal to node.key
+
+        //Case 1- a leaf node
+        if (node.left === null && node.right === null) {
+          node = null;
+          return node;
+        }
+
+        //Case 2 - a node with only 1 child
+        if (node.left === null) {
+          node = node.right;
+          return node;
+        }
+
+        else if (node.right === null) {
+          node = node.left;
+          return node;
+        }
+
+        //Case 3 - a node with 2 children
+        var aux = findMinNode(node.right);
+        node.key = aux.key;
+        node.right = _removeNode(node.right, aux.key);
+        return node;
+      }
+    };
+
+    BinarySearchTree.prototype.print = function () {
+      function print(node) {
+        // check if not is not null
+        if (node !== null) {
+          // text for left child
+          var leftChild = node.left !== null ? node.left.key : "None";
+          // text for right child
+          var rightChild = node.right !== null ? node.right.key : "None";
+          // print output
+          console.log(leftChild + " <-- " + node.key + " --> " + rightChild);
+          // traverse left
+          print(node.left);
+          // traverse right
+          print(node.right);
+        }
+      }
+      console.log("===tree===");
+      print(this.root);
+      console.log("==========");
+    };
+
+    BinarySearchTree.prototype.size = function()
+    {
+      if (this.node == null)
+      {
+        return 0;
+      }
+      else
+      {
+        return this.size(node.left) + this.size(node.right);
+        var counter;
+        counter++;
+      }
+      return counter;
+    };
+
+
+    // 1. Complete the construction of the tree below based on the example from
+    //    the book.
+
+    var tree = new BinarySearchTree();
+    tree.insert(11);
+    tree.insert(7);
+    tree.insert(15);
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(9);
+    tree.insert(8);
+    tree.insert(10);
+    tree.insert(13);
+    tree.insert(12);
+    tree.insert(14);
+    tree.insert(20);
+    tree.insert(18);
+    tree.insert(25);
+    tree.insert(6);
+    // copy rest from book
+    tree.print();
+
+
+
+    //----------------//
+    // Tree traversal //
+    //----------------//
+    console.log("Tree traversal");
+
+    function printNode(value) {
+      console.log(value);
+    }
+
+    // 1. Implement in-order traversal. Test your implementation with the
+    //    printNode() function given above.
+    //    NOTE: in-order means all keys are visited in sorted order.
+
+    console.log("in order");
+    tree.inOrderTraverse(printNode);
+
+    // 2. Implement pre-order traversal. Test your implementation with the
+    //    printNode() function given above.
+    //    NOTE: pre-order means a node is visited prior to its descendants.
+
+    console.log("pre order");
+    tree.preOrderTraverse(printNode);
+
+    // 3. Implement post-order traversal. Test your implementation with the
+    //    printNode() function given above.
+    //    NOTE: pre-order means a node is visited after its descendants.
+
+    console.log("post order");
+    tree.postOrderTraverse(printNode);
+
+    // 4. Sum all the keys in the tree.
+
+    function sumTree(tree) {
+      var total = 0;
+      function sumNode(key) {
+        total += key;
+      }
+      tree.inOrderTraverse(sumNode);
+      return total;
+    }
+    console.log("sum: " + sumTree(tree));
+
+    //--------------------------------//
+    // Searching for values in a tree //
+    //--------------------------------//
+    console.log("Searching for values in a tree");
+
+    // 1. Implement the min method and show that it works.
+
+    console.log("tree.min(): " + tree.min());
+
+    // 2. Implement the max method and show that it works.
+
+    console.log("tree.max(): " + tree.max());
+
+    // 3. Implement the search method and show that it works.
+
+    console.log("tree.search(1): " + tree.search(1));
+    console.log("tree.search(8): " + tree.search(8));
+
+
+
+    //---------//
+    // Project //
+    //---------//
+    console.log("Project");
+
+    // 1. Create the tree that is given in the book if you haven't done so yet.
+    //    NOTE: Use the one given right before the Tree Traversal section that
+    //          includes the 6.
+
+    var bookTree = new BinarySearchTree();
+
+    console.log("Book Tree Variable");
+
+    bookTree.insert(11); // Root
+
+    bookTree.insert(7);
+    bookTree.insert(15);
+    bookTree.insert(5);
+    bookTree.insert(3);
+    bookTree.insert(9);
+    bookTree.insert(8);
+    bookTree.insert(10);
+    bookTree.insert(13);
+    bookTree.insert(12);
+    bookTree.insert(14);
+    bookTree.insert(20);
+    bookTree.insert(18);
+    bookTree.insert(25);
+
+    bookTree.insert(6);
+
+    bookTree.print();
+
+    // 2. We want to make a copy of this tree, but want to make sure that the copy
+    //    we create is also nicely balanced (since we did not implement AVL). We
+    //    can use in-order, pre-order, and post-order traversal to retrieve the
+    //    nodes. If we want the new tree to be balanced as well, which order should
+    //    we use if we want to insert the nodes in the new tree?
+
+    /*The Traversal Order that we need to balance our bookTree Variable is the preOrder traversal
+     * since it visits the nodes in the tree is descending order, which will print the 
+     * tree in a structured and balanced order
+     */
+
+    // 3. Run the traversal approach you picked in (2) to collect all the keys and
+    //    store them in an array.
+
+    //Declaring Variables
+    var temp;     //Temporary Variable if Needed
+    var arrayTree = [];
+  function addToArray(key) {
+    arrayTree.push(key);
+
+
+  }
+  bookTree.preOrderTraverse(addToArray);
+
+    //Print bookTree 
+    console.log("Printing bookTree Variable");
+    bookTree.preOrderTraverse(printNode);
+
+    //Iterate the Node and store the Key in an array
+    var counter = 0;
+
+    for (var i = 0; i <= this.key;  i++)
+    {
+      arrayTree.push(node.key);
+    }
+
+    console.log("Counter: " + counter);
+
+    console.log(arrayTree);
+
+    //Print Array
+    console.log("arrayTree: " + arrayTree);
+
+    /*
+    function treeToArray(bookTreeOne) {
+      var arr = [bookTree];
+
+      for (var i = 0; i <= bookTree.length; i++)
+
+        arr.push(this.key);
+    }
+    */
+
+    console.log("Book Tree To Array");
+    bookTree.print();
+
+    // 4. Iterate through the array and insert each element inside a new tree. make
+    //    sure it is balanced.
+
+    //var newArray = [];
+
+    var newTree = new BinarySearchTree(); 
+
+
+
+    for (var i = 0; i <= bookTree.length; i++) {
+      //Insert Element
+      //arrayTree.push(newTree.key);
+      newTree.insert(arrayTree[i].length);
+    }
+
+    console.log("Results")
+    newTree.preOrderTraverse(printNode);
+    //console.log(treeToArray(bookTreeOne));
+
+
+    var testSize = 14;
+    for (var i = 0; i <= testSize; i++)
+    {
+      newTree.insert(arrayTree[i]);
+    }
+
+    
+    newTree.preOrderTraverse(printNode);
+
+  </script>
+</head>
+
+<body>
+  See console!
+</body>
+
+</html>
